@@ -15,7 +15,7 @@ FROM gcr.io/stacksmith-images/debian-buildpack:wheezy-r07
 
 MAINTAINER Bitnami <containers@bitnami.com>
 
-ENV STACKSMITH_STACK_ID="x2nwnfc" \
+ENV STACKSMITH_STACK_ID="28u9z8n" \
     STACKSMITH_STACK_NAME="prydonius/node-todo" \
     STACKSMITH_STACK_PRIVATE="1"
 
