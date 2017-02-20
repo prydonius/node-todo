@@ -1,11 +1,14 @@
 pipeline {
   agent any
 
+  environment {
+    IMAGE_NAME = 'prydonius/node-todo'
+  }
+
   stages {
     stage('Build') {
       steps {
-        echo 'Testing Docker...'
-        sh 'docker build -t prydonius/node-todo .'
+        sh 'docker build -t $IMAGE_NAME:$BUILD_ID .'
       }
     }
     stage('Test') {
@@ -20,8 +23,7 @@ pipeline {
 
           sh '''
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker tag prydonius/node-todo:latest prydonius/node-todo:$BUILD_ID
-            docker push prydonius/node-todo:$BUILD_ID
+            docker push $IMAGE_NAME:$BUILD_ID
           '''
         }
       }
