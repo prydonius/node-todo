@@ -18,7 +18,11 @@ pipeline {
         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub',
           usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]) {
 
-          sh 'echo $DOCKER_USERNAME'
+          sh '''
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker tag prydonius/node-todo:$BUILD_ID
+            docker push prydonius/node-todo:$BUILD_ID
+          '''
         }
       }
     }
