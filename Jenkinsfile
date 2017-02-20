@@ -5,8 +5,7 @@ pipeline {
     stage('Build') {
       steps {
         echo 'Testing Docker...'
-        sh 'sleep 3600'
-        sh 'docker version'
+        sh 'docker build -t prydonius/node-todo .'
       }
     }
     stage('Test') {
