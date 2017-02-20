@@ -20,7 +20,7 @@ pipeline {
 
           sh '''
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker tag prydonius/node-todo:$BUILD_ID
+            docker tag prydonius/node-todo:latest prydonius/node-todo:$BUILD_ID
             docker push prydonius/node-todo:$BUILD_ID
           '''
         }
