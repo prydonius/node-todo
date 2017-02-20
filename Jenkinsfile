@@ -10,12 +10,16 @@ pipeline {
     }
     stage('Test') {
       steps {
-        echo 'Testing..'
+        echo 'TODO: add tests'
       }
     }
     stage('Deploy') {
       steps {
-        echo 'Deploying....'
+        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub',
+          usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]) {
+
+          echo '${env.DOCKER_USERNAME}'
+        }
       }
     }
   }
