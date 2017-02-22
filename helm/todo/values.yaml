@@ -21,4 +21,4 @@ resources:
 ingress:
   host: todos.local
   # Enable automatic TLS with Let's Encrypt
-  tls: false
+  tls: true
