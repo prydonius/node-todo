@@ -3,8 +3,6 @@ pipeline {
 
   environment {
     IMAGE_NAME = 'prydonius/node-todo'
-    HELM_URL = 'https://storage.googleapis.com/kubernetes-helm'
-    HELM_TARBALL = 'helm-v2.2.0-linux-amd64.tar.gz'
   }
 
   stages {
@@ -54,13 +52,9 @@ pipeline {
 
       steps {
         sh '''
-          curl -O $HELM_URL/$HELM_TARBALL
-          tar xzfv $HELM_TARBALL -C /home/jenkins && rm $HELM_TARBALL
-          PATH=/home/jenkins/linux-amd64/:$PATH
-          helm init --client-only
-
+          ./helm/helm-init.sh
           helm dependencies build ./helm/todo
-          helm upgrade $RELEASE_NAME ./helm/todo --set image.tag=$BUILD_ID,ingress.host=$SERVER_HOST
+          helm upgrade --install $RELEASE_NAME ./helm/todo --set image.tag=$BUILD_ID,ingress.host=$SERVER_HOST
         '''
       }
     }
@@ -90,13 +84,9 @@ pipeline {
 
       steps {
         sh '''
-          curl -O $HELM_URL/$HELM_TARBALL
-          tar xzfv $HELM_TARBALL -C /home/jenkins && rm $HELM_TARBALL
-          PATH=/home/jenkins/linux-amd64/:$PATH
-          helm init --client-only
-
+          ./helm/helm-init.sh
           helm dependencies build ./helm/todo
-          helm upgrade $RELEASE_NAME ./helm/todo --set image.tag=$BUILD_ID,ingress.host=$SERVER_HOST
+          helm upgrade --install $RELEASE_NAME ./helm/todo --set image.tag=$BUILD_ID,ingress.host=$SERVER_HOST
         '''
       }
     }
