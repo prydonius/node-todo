@@ -1,13 +1,4 @@
 pipeline {
-  podTemplate(label: 'jenkins-pipeline', containers: [
-      containerTemplate(name: 'jnlp', image: 'jenkinsci/jnlp-slave:2.62', args: '${computer.jnlpmac} ${computer.name}', workingDir: '/home/jenkins', envVars: ["DOCKER_HOST=tcp://localhost:2375"] resourceRequestCpu: '200m', resourceLimitCpu: '200m', resourceRequestMemory: '256Mi', resourceLimitMemory: '256Mi'),
-      containerTemplate(name: 'docker-in-docker', image: 'docker:1.12-dind', command: '/usr/local/bin/dockerd-entrypoint.sh', args: '--storage-driver=overlay', privileged: true)
-  ],
-  volumes:[
-      hostPathVolume(mountPath: '/usr/bin/docker', hostPath: '/usr/bin/docker'),
-      emptyDirVolume(mountPath: '/var/lib/docker'),
-  ]){
-
   agent none
 
   environment {
@@ -15,6 +6,15 @@ pipeline {
   }
 
   stages {
+    podTemplate(label: 'jenkins-pipeline', containers: [
+        containerTemplate(name: 'jnlp', image: 'jenkinsci/jnlp-slave:2.62', args: '${computer.jnlpmac} ${computer.name}', workingDir: '/home/jenkins', envVars: ["DOCKER_HOST=tcp://localhost:2375"], resourceRequestCpu: '200m', resourceLimitCpu: '200m', resourceRequestMemory: '256Mi', resourceLimitMemory: '256Mi'),
+        containerTemplate(name: 'docker-in-docker', image: 'docker:1.12-dind', command: '/usr/local/bin/dockerd-entrypoint.sh', args: '--storage-driver=overlay', privileged: true)
+    ],
+    volumes:[
+        hostPathVolume(mountPath: '/usr/bin/docker', hostPath: '/usr/bin/docker'),
+        emptyDirVolume(mountPath: '/var/lib/docker'),
+    ]){
+
     stage('Build') {
       agent any
 
@@ -100,4 +100,4 @@ pipeline {
       }
     }
   }
-}
+}}
