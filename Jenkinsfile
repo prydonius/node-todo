@@ -21,23 +21,7 @@ pipeline {
         echo 'TODO: add tests'
       }
     }
-    stage('Image Release') {
-      agent any
-
-      when {
-        expression { env.BRANCH_NAME == 'master' }
-      }
-
-      steps {
-        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub',
-          usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]) {
-          sh '''
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker push $IMAGE_NAME:$BUILD_ID
-          '''
-        }
-      }
-    }
+   
     stage('Staging Deployment') {
       agent any
 
